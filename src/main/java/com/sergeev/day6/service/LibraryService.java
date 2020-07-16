@@ -1,8 +1,8 @@
-package com.sergeev.day6.model.service;
+package com.sergeev.day6.service;
 
 import com.sergeev.day6.model.dao.impl.BookListDAOImpl;
 import com.sergeev.day6.model.entity.Book;
-import com.sergeev.day6.model.exception.ProgramException;
+import com.sergeev.day6.model.exception.LibraryException;
 import com.sergeev.day6.model.validator.BookValidator;
 
 import java.util.ArrayList;
@@ -10,8 +10,8 @@ import java.util.List;
 
 public class LibraryService {
 
-    public boolean addBook(Book book) throws ProgramException {
-        boolean isAdded = false;
+    public List<Book> addBook(Book book) throws LibraryException {
+        List<Book> isAdded = new ArrayList<>();
         BookValidator bookValidator = new BookValidator();
         if (bookValidator.validateBook(book)) {
             BookListDAOImpl bookListDAO = new BookListDAOImpl();
@@ -20,14 +20,14 @@ public class LibraryService {
         return isAdded;
     }
 
-    public boolean removeBook(Book book) throws ProgramException {
-        boolean isRemoved = false;
+    public List<Book> removeBook(Book book) throws LibraryException {
+        List<Book> books = new ArrayList<>();
         BookValidator bookValidator = new BookValidator();
         if (bookValidator.validateBook(book)) {
             BookListDAOImpl bookListDAO = new BookListDAOImpl();
-            isRemoved = bookListDAO.removeBook(book);
+            books = bookListDAO.removeBook(book);
         }
-        return isRemoved;
+        return books;
     }
 
     public List<Book> findByTitle(String title) {
@@ -50,33 +50,41 @@ public class LibraryService {
         return books;
     }
 
-    public List<Book> findByCost(double cost) {
+    public List<Book> findByCost(String minCostLine, String maxCostLine) {
         List<Book> books = new ArrayList<>();
+        double minCost = Double.parseDouble(minCostLine);
+        double maxCost = Double.parseDouble(maxCostLine);
         BookValidator bookValidator = new BookValidator();
-        if (bookValidator.validateCostOfBook(cost)) {
+        if (bookValidator.validateCostOfBook(minCost) && bookValidator.validateCostOfBook(maxCost)) {
             BookListDAOImpl bookListDAO = new BookListDAOImpl();
-            books = bookListDAO.findByCost(cost);
+            books = bookListDAO.findByCost(minCost, maxCost);
         }
         return books;
     }
 
-    public List<Book> findByNumberOfPages(int numberOfPages) {
+    public List<Book> findByNumberOfPages(String minNumberOfPagesLine, String maxNumberOfPagesLine) {
         List<Book> books = new ArrayList<>();
+        int minNumberOfPages = Integer.parseInt(minNumberOfPagesLine);
+        int maxNumberOfPages = Integer.parseInt(maxNumberOfPagesLine);
         BookValidator bookValidator = new BookValidator();
-        if (bookValidator.validateNumberOfPagesInBook(numberOfPages)) {
+        if (bookValidator.validateNumberOfPagesInBook(minNumberOfPages) &&
+                bookValidator.validateNumberOfPagesInBook(maxNumberOfPages)) {
             BookListDAOImpl bookListDAO = new BookListDAOImpl();
-            books = bookListDAO.findByNumberOfPages(numberOfPages);
+            books = bookListDAO.findByNumberOfPages(minNumberOfPages, maxNumberOfPages);
         }
         return books;
     }
 
 
-    public List<Book> findByYearOfPublishing(int yearOfPublishing) {
+    public List<Book> findByYearOfPublishing(String minYearOfPublishingLine, String maxYearOfPublishingLine) {
         List<Book> books = new ArrayList<>();
+        int minYearOfPublishing = Integer.parseInt(minYearOfPublishingLine);
+        int maxYearOfPublishing = Integer.parseInt(maxYearOfPublishingLine);
         BookValidator bookValidator = new BookValidator();
-        if (bookValidator.validateYearOfPublishing(yearOfPublishing)) {
+        if (bookValidator.validateYearOfPublishing(minYearOfPublishing) &&
+                bookValidator.validateYearOfPublishing(maxYearOfPublishing)) {
             BookListDAOImpl bookListDAO = new BookListDAOImpl();
-            books = bookListDAO.findByNumberOfPages(yearOfPublishing);
+            books = bookListDAO.findByNumberOfPages(minYearOfPublishing, maxYearOfPublishing);
         }
         return books;
     }
@@ -101,5 +109,9 @@ public class LibraryService {
         return bookListDAO.sortBooksByNumberOfPages();
     }
 
+    public List<Book> sortBooksByYearOfPublishing() {
+        BookListDAOImpl bookListDAO = new BookListDAOImpl();
+        return bookListDAO.sortBooksByYearOfPublishing();
+    }
 
 }

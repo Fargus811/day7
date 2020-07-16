@@ -4,24 +4,15 @@ import java.util.List;
 
 public class Book {
 
-    public static void main(String[] args) {
-        String s = "DORE:DORE";
-        String sa = " DORE : DORE";
-        System.out.println(s.equals(sa.trim()));
-    }
-
-    private String id;
+    private int id;
     private String title;
     private List<String> authors;
     private double cost;
     private int numberOfPages;
     private int yearOfPublishing;
 
-    public String getId() {
-        return id;
-    }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -65,15 +56,18 @@ public class Book {
         this.yearOfPublishing = yearOfPublishing;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Book)) return false;
+
         Book book = (Book) o;
+
+        if (id != book.id) return false;
         if (Double.compare(book.cost, cost) != 0) return false;
         if (numberOfPages != book.numberOfPages) return false;
         if (yearOfPublishing != book.yearOfPublishing) return false;
-        if (id != null ? !id.equals(book.id) : book.id != null) return false;
         if (title != null ? !title.equals(book.title) : book.title != null) return false;
         return authors != null ? authors.equals(book.authors) : book.authors == null;
     }
@@ -82,7 +76,7 @@ public class Book {
     public int hashCode() {
         int result;
         long temp;
-        result = id != null ? id.hashCode() : 0;
+        result = id;
         result = 31 * result + (title != null ? title.hashCode() : 0);
         result = 31 * result + (authors != null ? authors.hashCode() : 0);
         temp = Double.doubleToLongBits(cost);

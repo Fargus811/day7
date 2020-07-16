@@ -1,4 +1,4 @@
-package com.sergeev.day6.model.util.comparator;
+package com.sergeev.day6.util.comparator;
 
 import com.sergeev.day6.model.entity.Book;
 

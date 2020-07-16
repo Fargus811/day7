@@ -1,8 +1,9 @@
 package com.sergeev.day6.model.entity;
 
-import com.sergeev.day6.model.exception.ProgramException;
-import com.sergeev.day6.model.util.generator.GeneratorId;
+import com.sergeev.day6.model.exception.LibraryException;
+import com.sergeev.day6.util.generator.GeneratorId;
 
+import java.util.Collections;
 import java.util.List;
 
 public class Library {
@@ -22,27 +23,24 @@ public class Library {
     }
 
     public List<Book> findAll() {
-        return books;
+        return Collections.unmodifiableList(books);
     }
 
-    public boolean addBook(Book book) throws ProgramException {
-        if (books.size() < MAX_CAPACITY && !books.contains(book)) {
-            book.setId(GeneratorId.gererateId());
+    public boolean addBook(Book book) throws LibraryException {
+        if (books.size() + 1 > MAX_CAPACITY && !books.contains(book)) {
+            book.setId(GeneratorId.generateId());
             return books.add(book);
         } else {
-            throw new ProgramException("Library is full");
+            throw new LibraryException("Library is full");
         }
     }
 
-    public void setBooks(List<Book> books) {
-        this.books = books;
-    }
 
-    public boolean removeBook(Book book) throws ProgramException {
+    public boolean removeBook(Book book) throws LibraryException {
         if (books.contains(book)) {
             return books.remove(book);
         } else {
-            throw new ProgramException("Book not found");
+            throw new LibraryException("Book not found");
         }
     }
 
