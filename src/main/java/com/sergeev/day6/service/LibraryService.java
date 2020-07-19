@@ -1,40 +1,50 @@
 package com.sergeev.day6.service;
 
-import com.sergeev.day6.model.dao.impl.BookListDAOImpl;
+import com.sergeev.day6.model.dao.impl.LibraryDAOImpl;
 import com.sergeev.day6.model.entity.Book;
-import com.sergeev.day6.model.exception.LibraryException;
-import com.sergeev.day6.model.validator.BookValidator;
+import com.sergeev.day6.model.exception.DAOException;
+import com.sergeev.day6.model.exception.ServiceException;
+import com.sergeev.day6.model.parser.NumberParser;
+import com.sergeev.day6.validator.BookValidator;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class LibraryService {
 
-    public List<Book> addBook(Book book) throws LibraryException {
-        List<Book> isAdded = new ArrayList<>();
+    public List<Book> addBook(Book book) throws ServiceException {
+        List<Book> result = new ArrayList<>();
         BookValidator bookValidator = new BookValidator();
-        if (bookValidator.validateBook(book)) {
-            BookListDAOImpl bookListDAO = new BookListDAOImpl();
-            isAdded = bookListDAO.addBook(book);
+        if (book != null && bookValidator.validateBook(book)) {
+            LibraryDAOImpl bookListDAO = new LibraryDAOImpl();
+            try {
+                result = bookListDAO.addBook(book);
+            } catch (DAOException e) {
+                throw new ServiceException(e);
+            }
         }
-        return isAdded;
+        return result;
     }
 
-    public List<Book> removeBook(Book book) throws LibraryException {
-        List<Book> books = new ArrayList<>();
+    public List<Book> removeBook(Book book) throws ServiceException {
+        List<Book> result = new ArrayList<>();
         BookValidator bookValidator = new BookValidator();
-        if (bookValidator.validateBook(book)) {
-            BookListDAOImpl bookListDAO = new BookListDAOImpl();
-            books = bookListDAO.removeBook(book);
+        if (book != null && bookValidator.validateBook(book)) {
+            LibraryDAOImpl bookListDAO = new LibraryDAOImpl();
+            try {
+                result = bookListDAO.removeBook(book);
+            } catch (DAOException e) {
+                throw new ServiceException(e);
+            }
         }
-        return books;
+        return result;
     }
 
     public List<Book> findByTitle(String title) {
         List<Book> books = new ArrayList<>();
         BookValidator bookValidator = new BookValidator();
         if (bookValidator.validateTitleOfBook(title)) {
-            BookListDAOImpl bookListDAO = new BookListDAOImpl();
+            LibraryDAOImpl bookListDAO = new LibraryDAOImpl();
             books = bookListDAO.findByTitle(title);
         }
         return books;
@@ -44,73 +54,77 @@ public class LibraryService {
         List<Book> books = new ArrayList<>();
         BookValidator bookValidator = new BookValidator();
         if (bookValidator.validateAuthorOfBook(author)) {
-            BookListDAOImpl bookListDAO = new BookListDAOImpl();
+            LibraryDAOImpl bookListDAO = new LibraryDAOImpl();
             books = bookListDAO.findByAuthor(author);
         }
         return books;
     }
 
-    public List<Book> findByCost(String minCostLine, String maxCostLine) {
+    public List<Book> findByCost(String minCostLine, String maxCostLine) throws ServiceException {
         List<Book> books = new ArrayList<>();
-        double minCost = Double.parseDouble(minCostLine);
-        double maxCost = Double.parseDouble(maxCostLine);
+        NumberParser numberParser = new NumberParser();
+        double minCost = numberParser.parseToDouble(minCostLine);
+        double maxCost = numberParser.parseToDouble(maxCostLine);
         BookValidator bookValidator = new BookValidator();
         if (bookValidator.validateCostOfBook(minCost) && bookValidator.validateCostOfBook(maxCost)) {
-            BookListDAOImpl bookListDAO = new BookListDAOImpl();
+            LibraryDAOImpl bookListDAO = new LibraryDAOImpl();
             books = bookListDAO.findByCost(minCost, maxCost);
         }
         return books;
     }
 
-    public List<Book> findByNumberOfPages(String minNumberOfPagesLine, String maxNumberOfPagesLine) {
+    public List<Book> findByNumberOfPages(String minNumberOfPagesLine, String maxNumberOfPagesLine)
+            throws ServiceException {
         List<Book> books = new ArrayList<>();
-        int minNumberOfPages = Integer.parseInt(minNumberOfPagesLine);
-        int maxNumberOfPages = Integer.parseInt(maxNumberOfPagesLine);
+        NumberParser numberParser = new NumberParser();
+        int minNumberOfPages = numberParser.parseToInt(minNumberOfPagesLine);
+        int maxNumberOfPages = numberParser.parseToInt(maxNumberOfPagesLine);
         BookValidator bookValidator = new BookValidator();
         if (bookValidator.validateNumberOfPagesInBook(minNumberOfPages) &&
                 bookValidator.validateNumberOfPagesInBook(maxNumberOfPages)) {
-            BookListDAOImpl bookListDAO = new BookListDAOImpl();
+            LibraryDAOImpl bookListDAO = new LibraryDAOImpl();
             books = bookListDAO.findByNumberOfPages(minNumberOfPages, maxNumberOfPages);
         }
         return books;
     }
 
-
-    public List<Book> findByYearOfPublishing(String minYearOfPublishingLine, String maxYearOfPublishingLine) {
+    public List<Book> findByYearOfPublishing(String minYearOfPublishingLine, String maxYearOfPublishingLine)
+            throws ServiceException {
         List<Book> books = new ArrayList<>();
-        int minYearOfPublishing = Integer.parseInt(minYearOfPublishingLine);
-        int maxYearOfPublishing = Integer.parseInt(maxYearOfPublishingLine);
+        NumberParser numberParser = new NumberParser();
+        int minYearOfPublishing = numberParser.parseToInt(minYearOfPublishingLine);
+        int maxYearOfPublishing = numberParser.parseToInt(maxYearOfPublishingLine);
         BookValidator bookValidator = new BookValidator();
         if (bookValidator.validateYearOfPublishing(minYearOfPublishing) &&
                 bookValidator.validateYearOfPublishing(maxYearOfPublishing)) {
-            BookListDAOImpl bookListDAO = new BookListDAOImpl();
-            books = bookListDAO.findByNumberOfPages(minYearOfPublishing, maxYearOfPublishing);
+            LibraryDAOImpl bookListDAO = new LibraryDAOImpl();
+            books = bookListDAO.findByYearOfPublishing(minYearOfPublishing, maxYearOfPublishing);
         }
         return books;
     }
 
     public List<Book> sortBooksByTitle() {
-        BookListDAOImpl bookListDAO = new BookListDAOImpl();
+        LibraryDAOImpl bookListDAO = new LibraryDAOImpl();
         return bookListDAO.sortBooksByTitle();
     }
 
     public List<Book> sortBooksByAuthors() {
-        BookListDAOImpl bookListDAO = new BookListDAOImpl();
+        LibraryDAOImpl bookListDAO = new LibraryDAOImpl();
         return bookListDAO.sortBooksByAuthors();
     }
 
     public List<Book> sortBooksByCost() {
-        BookListDAOImpl bookListDAO = new BookListDAOImpl();
+        LibraryDAOImpl bookListDAO = new LibraryDAOImpl();
         return bookListDAO.sortBooksByCost();
     }
 
     public List<Book> sortBooksByNumberOfPages() {
-        BookListDAOImpl bookListDAO = new BookListDAOImpl();
+        LibraryDAOImpl bookListDAO = new LibraryDAOImpl();
         return bookListDAO.sortBooksByNumberOfPages();
     }
 
     public List<Book> sortBooksByYearOfPublishing() {
-        BookListDAOImpl bookListDAO = new BookListDAOImpl();
+        LibraryDAOImpl bookListDAO = new LibraryDAOImpl();
         return bookListDAO.sortBooksByYearOfPublishing();
     }
 

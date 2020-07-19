@@ -1,7 +1,7 @@
-package com.sergeev.day6.controller;
+package com.sergeev.day6.controller.command;
 
-import com.sergeev.day6.controller.command.AddBookCommand;
-import com.sergeev.day6.controller.command.RemoveBookCommand;
+import com.sergeev.day6.controller.command.change.AddBookCommand;
+import com.sergeev.day6.controller.command.change.RemoveBookCommand;
 import com.sergeev.day6.controller.command.find.FindBookByAuthorCommand;
 import com.sergeev.day6.controller.command.sort.*;
 

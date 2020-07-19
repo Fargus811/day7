@@ -6,9 +6,14 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.sergeev.day6.util.Regex.RegularExpression.*;
-
 public class BookCreator {
+
+    private static final String AUTHOR_KEY = "authors";
+    private static final String COST_KEY = "cost";
+    private static final String NUMBER_OF_PAGES_KEY = "numberOfPages";
+    private static final String TITLE_KEY = "title";
+    private static final String YEAR_KEY = "year";
+    private static final String REGEX_FOR_SPLIT_AUTHORS = ":";
 
     public Optional<Book> createBookFromMap(Map<String, String> params) {
         Book book = null;
@@ -20,6 +25,6 @@ public class BookCreator {
             book.setNumberOfPages(Integer.parseInt(params.get(NUMBER_OF_PAGES_KEY)));
             book.setYearOfPublishing(Integer.parseInt(params.get(YEAR_KEY)));
         }
-        return Optional.of(book);
+        return Optional.ofNullable(book);
     }
 }

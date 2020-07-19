@@ -10,9 +10,9 @@ public class BookYearOfPublishingComparator implements Comparator<Book> {
     public int compare(Book firstBook, Book secondBook) {
         int firstBookYearOfPublishing = firstBook.getYearOfPublishing();
         int secondBookYearOfPublishing = secondBook.getYearOfPublishing();
-        if (firstBookYearOfPublishing == secondBookYearOfPublishing){
+        if (firstBookYearOfPublishing == secondBookYearOfPublishing) {
             return 0;
         }
-        return firstBookYearOfPublishing>secondBookYearOfPublishing? 1 : -1 ;
+        return firstBookYearOfPublishing > secondBookYearOfPublishing ? 1 : -1;
     }
 }

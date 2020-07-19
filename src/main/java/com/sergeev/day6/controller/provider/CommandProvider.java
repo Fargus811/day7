@@ -1,5 +1,7 @@
-package com.sergeev.day6.controller;
+package com.sergeev.day6.controller.provider;
 
+import com.sergeev.day6.controller.command.Command;
+import com.sergeev.day6.controller.command.CommandType;
 import com.sergeev.day6.model.exception.CommandException;
 
 public class CommandProvider {

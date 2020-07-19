@@ -1,15 +1,15 @@
 package com.sergeev.day6.model.dao;
 
 import com.sergeev.day6.model.entity.Book;
-import com.sergeev.day6.model.exception.LibraryException;
+import com.sergeev.day6.model.exception.DAOException;
 
 import java.util.List;
 
-public interface BookListDAO {
+public interface LibraryDAO {
 
-    List<Book> addBook(Book book) throws LibraryException;
+    List<Book> addBook(Book book) throws DAOException;
 
-    List<Book> removeBook(Book book) throws LibraryException;
+    List<Book> removeBook(Book book) throws DAOException;
 
     List<Book> findByTitle(String name);
 

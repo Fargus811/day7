@@ -1,27 +1,34 @@
 package com.sergeev.day6.model.dao.impl;
 
-import com.sergeev.day6.model.dao.BookListDAO;
+import com.sergeev.day6.model.dao.LibraryDAO;
 import com.sergeev.day6.model.entity.Book;
 import com.sergeev.day6.model.entity.Library;
-import com.sergeev.day6.model.exception.LibraryException;
-import com.sergeev.day6.util.comparator.BookAuthorComparator;
-import com.sergeev.day6.util.comparator.BookCostComparator;
-import com.sergeev.day6.util.comparator.BookNumberOfPagesComparator;
-import com.sergeev.day6.util.comparator.BookYearOfPublishingComparator;
+import com.sergeev.day6.model.exception.DAOException;
+import com.sergeev.day6.util.comparator.*;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
-public class BookListDAOImpl implements BookListDAO {
 
-    public List<Book> addBook(Book book) throws LibraryException {
-        Library.getInstance().addBook(book);
+public class LibraryDAOImpl implements LibraryDAO {
+
+    public List<Book> addBook(Book book) throws DAOException {
+        List<Book> books = Library.getInstance().findAll();
+        if (books.size() + 1 < Library.MAX_CAPACITY && !books.contains(book)) {
+            Library.getInstance().addBook(book);
+        } else {
+            throw new DAOException("Library is full or contains this book");
+        }
         return Library.getInstance().findAll();
     }
 
-    public List<Book> removeBook(Book book) throws LibraryException {
-        Library.getInstance().removeBook(book);
+    public List<Book> removeBook(Book book) throws DAOException {
+        List<Book> books = Library.getInstance().findAll();
+        if (books.contains(book)) {
+            Library.getInstance().removeBook(book);
+        } else {
+            throw new DAOException("Book not found");
+        }
         return Library.getInstance().findAll();
     }
 
@@ -54,7 +61,7 @@ public class BookListDAOImpl implements BookListDAO {
 
     public List<Book> findByCost(double minCost, double maxCost) {
         List<Book> bookList = new ArrayList<>();
-        for (Book book : bookList) {
+        for (Book book : Library.getInstance().findAll()) {
             double currentCost = book.getCost();
             if (currentCost >= minCost && currentCost <= maxCost) {
                 bookList.add(book);
@@ -86,32 +93,42 @@ public class BookListDAOImpl implements BookListDAO {
     }
 
     public List<Book> sortBooksByTitle() {
-        List<Book> sortedList = Library.getInstance().findAll();
-        sortedList.sort(Comparator.comparing(Book::getTitle));
+        List<Book> books = Library.getInstance().findAll();
+        List<Book> sortedList = new ArrayList<>();
+        sortedList.addAll(books);
+        sortedList.sort(new BookTitleComparator());
         return sortedList;
     }
 
     public List<Book> sortBooksByAuthors() {
-        List<Book> sortedList = Library.getInstance().findAll();
+        List<Book> books = Library.getInstance().findAll();
+        List<Book> sortedList = new ArrayList<>();
+        sortedList.addAll(books);
         sortedList.sort(new BookAuthorComparator());
         return sortedList;
     }
 
 
     public List<Book> sortBooksByCost() {
-        List<Book> sortedList = Library.getInstance().findAll();
+        List<Book> books = Library.getInstance().findAll();
+        List<Book> sortedList = new ArrayList<>();
+        sortedList.addAll(books);
         sortedList.sort(new BookCostComparator());
         return sortedList;
     }
 
     public List<Book> sortBooksByNumberOfPages() {
-        List<Book> sortedList = Library.getInstance().findAll();
+        List<Book> books = Library.getInstance().findAll();
+        List<Book> sortedList = new ArrayList<>();
+        sortedList.addAll(books);
         sortedList.sort(new BookNumberOfPagesComparator());
         return sortedList;
     }
 
     public List<Book> sortBooksByYearOfPublishing() {
-        List<Book> sortedList = Library.getInstance().findAll();
+        List<Book> books = Library.getInstance().findAll();
+        List<Book> sortedList = new ArrayList<>();
+        sortedList.addAll(books);
         sortedList.sort(new BookYearOfPublishingComparator());
         return sortedList;
     }

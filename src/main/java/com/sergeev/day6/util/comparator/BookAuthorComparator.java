@@ -4,7 +4,6 @@ import com.sergeev.day6.model.entity.Book;
 
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 
 public class BookAuthorComparator implements Comparator<Book> {
@@ -14,15 +13,9 @@ public class BookAuthorComparator implements Comparator<Book> {
         List<String> firstBookAuthors = firstBook.getAuthors();
         List<String> secondBookAuthors = secondBook.getAuthors();
         Collections.sort(firstBookAuthors);
-        Collections.sort(firstBookAuthors);
-        Iterator<String> firstAuthorsIterator = firstBookAuthors.iterator();
-        Iterator<String> secondAuthorsIterator = secondBookAuthors.iterator();
-        while (firstAuthorsIterator.hasNext()) {
-            String firstBookAuthor = firstAuthorsIterator.next();
-            String secondBookAuthor = secondAuthorsIterator.next();
-            if (firstBookAuthor.compareTo(secondBookAuthor) != 0) {
-                return firstBookAuthor.compareTo(secondBookAuthor);
-            }
+        Collections.sort(secondBookAuthors);
+        if (firstBookAuthors.get(0).compareTo(secondBookAuthors.get(0)) != 0) {
+            return firstBookAuthors.get(0).compareTo(secondBookAuthors.get(0));
         }
         return 0;
     }

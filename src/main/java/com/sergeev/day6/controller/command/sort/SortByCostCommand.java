@@ -1,6 +1,6 @@
 package com.sergeev.day6.controller.command.sort;
 
-import com.sergeev.day6.controller.Command;
+import com.sergeev.day6.controller.command.Command;
 import com.sergeev.day6.model.entity.Book;
 import com.sergeev.day6.model.exception.CommandException;
 import com.sergeev.day6.service.LibraryService;

@@ -1,4 +1,4 @@
-package com.sergeev.day6.controller;
+package com.sergeev.day6.controller.command;
 
 import com.sergeev.day6.model.entity.Book;
 import com.sergeev.day6.model.exception.CommandException;
