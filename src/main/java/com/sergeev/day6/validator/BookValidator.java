@@ -35,7 +35,6 @@ public class BookValidator {
         return yearOfPublishing <= MAX_YEAR_OF_PUBLISHING && yearOfPublishing >= MIN_YEAR_OF_PUBLISHING;
     }
 
-
     public boolean validateBook(Book book) {
         boolean isValidAuthorName = false;
         for (String authorName : book.getAuthors()) {
