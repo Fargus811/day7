@@ -85,4 +85,17 @@ public class Book {
         result = 31 * result + yearOfPublishing;
         return result;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Book{");
+        sb.append("id=").append(id);
+        sb.append(", title='").append(title).append('\'');
+        sb.append(", authors=").append(authors);
+        sb.append(", cost=").append(cost);
+        sb.append(", numberOfPages=").append(numberOfPages);
+        sb.append(", yearOfPublishing=").append(yearOfPublishing);
+        sb.append('}');
+        return sb.toString();
+    }
 }

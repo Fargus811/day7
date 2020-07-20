@@ -3,6 +3,7 @@ package com.sergeev.day6.model.dao.impl;
 import com.sergeev.day6.model.entity.Book;
 import com.sergeev.day6.model.entity.Library;
 import com.sergeev.day6.model.exception.DAOException;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -39,6 +40,11 @@ public class LibraryDAOImplTest {
         bookSecond.setNumberOfPages(3000);
         bookSecond.setCost(200);
         bookSecond.setAuthors(authorsSecond);
+    }
+
+    @AfterMethod
+    public void tearDown() {
+        Library.getInstance().removeAll();
     }
 
     @Test

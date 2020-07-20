@@ -14,9 +14,6 @@ public class BookAuthorComparator implements Comparator<Book> {
         List<String> secondBookAuthors = secondBook.getAuthors();
         Collections.sort(firstBookAuthors);
         Collections.sort(secondBookAuthors);
-        if (firstBookAuthors.get(0).compareTo(secondBookAuthors.get(0)) != 0) {
-            return firstBookAuthors.get(0).compareTo(secondBookAuthors.get(0));
-        }
-        return 0;
+        return firstBookAuthors.get(0).compareTo(secondBookAuthors.get(0));
     }
 }

@@ -3,6 +3,7 @@ package com.sergeev.day6.service;
 import com.sergeev.day6.model.entity.Book;
 import com.sergeev.day6.model.entity.Library;
 import com.sergeev.day6.model.exception.ServiceException;
+import com.sergeev.day6.service.impl.LibraryServiceImpl;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -12,15 +13,15 @@ import java.util.List;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
-public class LibraryServiceTest {
+public class LibraryServiceImplTest {
 
-    private LibraryService libraryService;
+    private LibraryServiceImpl libraryServiceImpl;
     private Book bookFirst;
     private Book bookSecond;
 
     @BeforeMethod
     public void setUp() {
-        libraryService = new LibraryService();
+        libraryServiceImpl = new LibraryServiceImpl();
         bookFirst = new Book();
         List<String> authors = new ArrayList<>();
         authors.add("Sergeev D.");
@@ -45,26 +46,27 @@ public class LibraryServiceTest {
     public void testAddBook() throws ServiceException {
         List<Book> expected = new ArrayList<>();
         expected.add(bookFirst);
-        List<Book> actual = libraryService.addBook(bookFirst);
+        List<Book> actual = libraryServiceImpl.addBook(bookFirst);
         assertEquals(actual, expected);
     }
+
     @Test
     public void testAddNullBook() throws ServiceException {
         List<Book> expected = new ArrayList<>();
-        List<Book> actual = libraryService.addBook(null);
+        List<Book> actual = libraryServiceImpl.addBook(null);
         assertEquals(actual, expected);
     }
 
     @Test(expectedExceptions = ServiceException.class)
     public void testAddBookServiceException() throws ServiceException {
-        libraryService.addBook(bookFirst);
-        libraryService.addBook(bookFirst);
+        libraryServiceImpl.addBook(bookFirst);
+        libraryServiceImpl.addBook(bookFirst);
     }
 
     @Test
     public void testRemoveBook() throws ServiceException {
-        libraryService.addBook(bookFirst);
-        libraryService.removeBook(bookFirst);
+        libraryServiceImpl.addBook(bookFirst);
+        libraryServiceImpl.removeBook(bookFirst);
         assertTrue(Library.getInstance().findAll().isEmpty());
     }
 
@@ -79,123 +81,127 @@ public class LibraryServiceTest {
         book.setNumberOfPages(300);
         book.setCost(20.0);
         book.setAuthors(authors);
-        libraryService.removeBook(book);
+        libraryServiceImpl.removeBook(book);
     }
 
     @Test
     public void testFindByTitle() throws ServiceException {
-        libraryService.addBook(bookFirst);
-        libraryService.addBook(bookSecond);
+        libraryServiceImpl.addBook(bookFirst);
+        libraryServiceImpl.addBook(bookSecond);
         List<Book> expected = new ArrayList<>();
         expected.add(bookFirst);
-        List<Book> actual = libraryService.findByTitle("TestBook1");
+        List<Book> actual = libraryServiceImpl.findByTitle("TestBook1");
         assertEquals(actual, expected);
     }
 
     @Test
     public void testFindByAuthor() throws ServiceException {
-        libraryService.addBook(bookFirst);
-        libraryService.addBook(bookSecond);
+        libraryServiceImpl.addBook(bookFirst);
+        libraryServiceImpl.addBook(bookSecond);
         List<Book> expected = new ArrayList<>();
         expected.add(bookFirst);
-        List<Book> actual = libraryService.findByAuthor("Sergeev D.");
+        List<Book> actual = libraryServiceImpl.findByAuthor("Sergeev D.");
         assertEquals(actual, expected);
 
     }
 
     @Test
-    public void testFindByCost() throws ServiceException{
-        libraryService.addBook(bookFirst);
-        libraryService.addBook(bookSecond);
+    public void testFindByCost() throws ServiceException {
+        libraryServiceImpl.addBook(bookFirst);
+        libraryServiceImpl.addBook(bookSecond);
         List<Book> expected = new ArrayList<>();
         expected.add(bookFirst);
-        List<Book> actual = libraryService.findByCost("10","100");
+        List<Book> actual = libraryServiceImpl.findByCost("10", "100");
         assertEquals(actual, expected);
     }
+
     @Test(expectedExceptions = ServiceException.class)
-    public void testFindByInvalidCostServiceException() throws ServiceException{
-        libraryService.findByCost("1sv","1sac");
+    public void testFindByInvalidCostServiceException() throws ServiceException {
+        libraryServiceImpl.findByCost("1sv", "1sac");
     }
 
     @Test
-    public void testFindByNumberOfPages() throws ServiceException{
-        libraryService.addBook(bookFirst);
-        libraryService.addBook(bookSecond);
+    public void testFindByNumberOfPages() throws ServiceException {
+        libraryServiceImpl.addBook(bookFirst);
+        libraryServiceImpl.addBook(bookSecond);
         List<Book> expected = new ArrayList<>();
         expected.add(bookFirst);
-        List<Book> actual = libraryService.findByNumberOfPages("100","400");
+        List<Book> actual = libraryServiceImpl.findByNumberOfPages("100", "400");
         assertEquals(actual, expected);
     }
+
     @Test(expectedExceptions = ServiceException.class)
-    public void testFindByInvalidNumberOfPagesServiceException() throws ServiceException{
-       libraryService.findByNumberOfPages("100asa","400ada");
+    public void testFindByInvalidNumberOfPagesServiceException() throws ServiceException {
+        libraryServiceImpl.findByNumberOfPages("100asa", "400ada");
     }
 
     @Test
     public void testFindByYearOfPublishing() throws ServiceException {
-        libraryService.addBook(bookFirst);
-        libraryService.addBook(bookSecond);
+        libraryServiceImpl.addBook(bookFirst);
+        libraryServiceImpl.addBook(bookSecond);
         List<Book> expected = new ArrayList<>();
         expected.add(bookFirst);
-        List<Book> actual = libraryService.findByYearOfPublishing("2008", "2011");
+        List<Book> actual = libraryServiceImpl.findByYearOfPublishing("2008", "2011");
         assertEquals(actual, expected);
     }
+
     @Test(expectedExceptions = ServiceException.class)
     public void testFindByInvalidYearOfPublishingServiceException() throws ServiceException {
-        libraryService.findByYearOfPublishing("2008fwf", "2011c");
+        libraryServiceImpl.findByYearOfPublishing("2008fwf", "2011c");
     }
 
     @Test
-    public void testSortBooksByTitle() throws ServiceException{
-        libraryService.addBook(bookFirst);
-        libraryService.addBook(bookSecond);
+    public void testSortBooksByTitle() throws ServiceException {
+        libraryServiceImpl.addBook(bookFirst);
+        libraryServiceImpl.addBook(bookSecond);
         List<Book> expected = new ArrayList<>();
         expected.add(bookFirst);
         expected.add(bookSecond);
-        List<Book> actual = libraryService.sortBooksByTitle();
+        List<Book> actual = libraryServiceImpl.sortBooksByTitle();
         assertEquals(actual, expected);
     }
-    
+
     @Test
     public void testSortBooksByAuthors() throws ServiceException {
-        libraryService.addBook(bookFirst);
-        libraryService.addBook(bookSecond);
+        libraryServiceImpl.addBook(bookFirst);
+        libraryServiceImpl.addBook(bookSecond);
         List<Book> expected = new ArrayList<>();
         expected.add(bookSecond);
         expected.add(bookFirst);
-        List<Book> actual = libraryService.sortBooksByAuthors();
+        List<Book> actual = libraryServiceImpl.sortBooksByAuthors();
         assertEquals(actual, expected);
     }
+
     @Test
     public void testSortBooksByCost() throws ServiceException {
-        libraryService.addBook(bookSecond);
-        libraryService.addBook(bookFirst);
+        libraryServiceImpl.addBook(bookSecond);
+        libraryServiceImpl.addBook(bookFirst);
         List<Book> expected = new ArrayList<>();
         expected.add(bookFirst);
         expected.add(bookSecond);
-        List<Book> actual = libraryService.sortBooksByCost();
+        List<Book> actual = libraryServiceImpl.sortBooksByCost();
         assertEquals(actual, expected);
     }
 
     @Test
     public void testSortBooksByNumberOfPages() throws ServiceException {
-        libraryService.addBook(bookSecond);
-        libraryService.addBook(bookFirst);
+        libraryServiceImpl.addBook(bookSecond);
+        libraryServiceImpl.addBook(bookFirst);
         List<Book> expected = new ArrayList<>();
         expected.add(bookFirst);
         expected.add(bookSecond);
-        List<Book> actual = libraryService.sortBooksByNumberOfPages();
+        List<Book> actual = libraryServiceImpl.sortBooksByNumberOfPages();
         assertEquals(actual, expected);
     }
 
     @Test
     public void testSortBooksByYearOfPublishing() throws ServiceException {
-        libraryService.addBook(bookSecond);
-        libraryService.addBook(bookFirst);
+        libraryServiceImpl.addBook(bookSecond);
+        libraryServiceImpl.addBook(bookFirst);
         List<Book> expected = new ArrayList<>();
         expected.add(bookSecond);
         expected.add(bookFirst);
-        List<Book> actual = libraryService.sortBooksByYearOfPublishing();
+        List<Book> actual = libraryServiceImpl.sortBooksByYearOfPublishing();
         assertEquals(actual, expected);
     }
 }

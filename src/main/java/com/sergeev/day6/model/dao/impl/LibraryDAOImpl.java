@@ -12,6 +12,7 @@ import java.util.List;
 
 public class LibraryDAOImpl implements LibraryDAO {
 
+    @Override
     public List<Book> addBook(Book book) throws DAOException {
         List<Book> books = Library.getInstance().findAll();
         if (books.size() + 1 < Library.MAX_CAPACITY && !books.contains(book)) {
@@ -22,6 +23,7 @@ public class LibraryDAOImpl implements LibraryDAO {
         return Library.getInstance().findAll();
     }
 
+    @Override
     public List<Book> removeBook(Book book) throws DAOException {
         List<Book> books = Library.getInstance().findAll();
         if (books.contains(book)) {
@@ -32,6 +34,7 @@ public class LibraryDAOImpl implements LibraryDAO {
         return Library.getInstance().findAll();
     }
 
+    @Override
     public List<Book> findByTitle(String nameOfBook) {
         List<Book> bookList = new ArrayList<>();
         for (Book book : Library.getInstance().findAll()) {
@@ -42,6 +45,7 @@ public class LibraryDAOImpl implements LibraryDAO {
         return bookList;
     }
 
+    @Override
     public List<Book> findByAuthor(String authorName) {
         List<Book> bookList = new ArrayList<>();
         for (Book book : Library.getInstance().findAll()) {
@@ -59,6 +63,7 @@ public class LibraryDAOImpl implements LibraryDAO {
         }
     }
 
+    @Override
     public List<Book> findByCost(double minCost, double maxCost) {
         List<Book> bookList = new ArrayList<>();
         for (Book book : Library.getInstance().findAll()) {
@@ -70,6 +75,7 @@ public class LibraryDAOImpl implements LibraryDAO {
         return bookList;
     }
 
+    @Override
     public List<Book> findByNumberOfPages(int minNumberOfPages, int maxNumberOfPages) {
         List<Book> bookList = new ArrayList<>();
         for (Book book : Library.getInstance().findAll()) {
@@ -81,6 +87,7 @@ public class LibraryDAOImpl implements LibraryDAO {
         return bookList;
     }
 
+    @Override
     public List<Book> findByYearOfPublishing(int minYearOfPublishing, int maxYearOfPublishing) {
         List<Book> bookList = new ArrayList<>();
         for (Book book : Library.getInstance().findAll()) {
@@ -92,39 +99,38 @@ public class LibraryDAOImpl implements LibraryDAO {
         return bookList;
     }
 
+    @Override
     public List<Book> sortBooksByTitle() {
-        List<Book> books = Library.getInstance().findAll();
-        List<Book> sortedList = new ArrayList<>();
-        sortedList.addAll(books);
+        List<Book> sortedList = new ArrayList<>(Library.getInstance().findAll());
         sortedList.sort(new BookTitleComparator());
         return sortedList;
     }
 
+    @Override
     public List<Book> sortBooksByAuthors() {
-        List<Book> books = Library.getInstance().findAll();
         List<Book> sortedList = new ArrayList<>();
-        sortedList.addAll(books);
+        sortedList.addAll(Library.getInstance().findAll());
         sortedList.sort(new BookAuthorComparator());
         return sortedList;
     }
 
-
+    @Override
     public List<Book> sortBooksByCost() {
-        List<Book> books = Library.getInstance().findAll();
         List<Book> sortedList = new ArrayList<>();
-        sortedList.addAll(books);
+        sortedList.addAll(Library.getInstance().findAll());
         sortedList.sort(new BookCostComparator());
         return sortedList;
     }
 
+    @Override
     public List<Book> sortBooksByNumberOfPages() {
-        List<Book> books = Library.getInstance().findAll();
         List<Book> sortedList = new ArrayList<>();
-        sortedList.addAll(books);
+        sortedList.addAll(Library.getInstance().findAll());
         sortedList.sort(new BookNumberOfPagesComparator());
         return sortedList;
     }
 
+    @Override
     public List<Book> sortBooksByYearOfPublishing() {
         List<Book> books = Library.getInstance().findAll();
         List<Book> sortedList = new ArrayList<>();

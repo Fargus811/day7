@@ -8,5 +8,5 @@ import java.util.Map;
 
 public interface Command {
 
-    List<Book> execute(Map<String,String> params) throws CommandException;
+    List<Book> execute(Map<String, String> params) throws CommandException;
 }

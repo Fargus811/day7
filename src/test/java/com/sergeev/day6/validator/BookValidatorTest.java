@@ -19,7 +19,6 @@ public class BookValidatorTest {
         bookValidator = new BookValidator();
     }
 
-
     @Test
     public void testValidateTitleOfBookPositive() {
         boolean actual = bookValidator.validateTitleOfBook("Test");

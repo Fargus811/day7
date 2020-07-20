@@ -37,10 +37,11 @@ public class BookCostComparatorTest {
         bookSecond.setCost(200);
         bookSecond.setAuthors(authorsSecond);
     }
+
     @Test
     public void testCompare() {
-        int actual = bookCostComparator.compare(bookFirst,bookSecond);
+        int actual = bookCostComparator.compare(bookFirst, bookSecond);
         int expected = -1;
-        assertEquals(actual,expected);
+        assertEquals(actual, expected);
     }
 }

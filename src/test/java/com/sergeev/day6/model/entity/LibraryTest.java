@@ -16,7 +16,7 @@ public class LibraryTest {
 
     @BeforeMethod
     public void setUp() {
-       library =  Library.getInstance();
+        library = Library.getInstance();
         bookFirst = new Book();
         List<String> authors = new ArrayList<>();
         authors.add("Sergeev D.");

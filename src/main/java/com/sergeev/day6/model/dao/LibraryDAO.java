@@ -19,7 +19,7 @@ public interface LibraryDAO {
 
     List<Book> findByNumberOfPages(int minNumberOfPages, int maxNumberOfPages);
 
-    List<Book> findByYearOfPublishing( int minYearOfPublishing, int maxYearOfPublishing);
+    List<Book> findByYearOfPublishing(int minYearOfPublishing, int maxYearOfPublishing);
 
     List<Book> sortBooksByTitle();
 
@@ -28,4 +28,6 @@ public interface LibraryDAO {
     List<Book> sortBooksByCost();
 
     List<Book> sortBooksByNumberOfPages();
+
+    List<Book> sortBooksByYearOfPublishing();
 }

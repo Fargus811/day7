@@ -1,4 +1,4 @@
-package com.sergeev.day6.model.creator;
+package com.sergeev.day6.util.creator;
 
 import com.sergeev.day6.model.entity.Book;
 

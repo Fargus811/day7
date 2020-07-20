@@ -1,4 +1,4 @@
-package com.sergeev.day6.model.parser;
+package com.sergeev.day6.util.parser;
 
 import com.sergeev.day6.model.exception.ServiceException;
 

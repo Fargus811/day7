@@ -7,7 +7,7 @@ import org.testng.annotations.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertEquals;
 
 public class BookTitleComparatorTest {
 
@@ -37,10 +37,11 @@ public class BookTitleComparatorTest {
         bookSecond.setCost(200);
         bookSecond.setAuthors(authorsSecond);
     }
+
     @Test
     public void testCompare() {
-        int actual = bookTitleComparator.compare(bookFirst,bookSecond);
+        int actual = bookTitleComparator.compare(bookFirst, bookSecond);
         int expected = -1;
-        assertEquals(actual,expected);
+        assertEquals(actual, expected);
     }
 }

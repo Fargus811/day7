@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class Controller {
 
-    public List<Book> processRequest(String commandName, Map<String,String> params) throws CommandException {
+    public List<Book> processRequest(String commandName, Map<String, String> params) throws CommandException {
         Command command = CommandProvider.defineCommand(commandName);
         return command.execute(params);
     }

@@ -8,12 +8,6 @@ public class BookNumberOfPagesComparator implements Comparator<Book> {
 
     @Override
     public int compare(Book firstBook, Book secondBook) {
-        int firstBookNumberOfPages = firstBook.getNumberOfPages();
-        int secondBookNumberOfPages = secondBook.getNumberOfPages();
-        if (firstBookNumberOfPages == secondBookNumberOfPages) {
-            return 0;
-        }
-        return firstBookNumberOfPages > secondBookNumberOfPages ? 1 : -1;
+        return Integer.compare(firstBook.getNumberOfPages(), secondBook.getNumberOfPages());
     }
-
 }
