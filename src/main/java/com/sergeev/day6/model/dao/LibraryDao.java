@@ -5,7 +5,9 @@ import com.sergeev.day6.model.exception.DAOException;
 
 import java.util.List;
 
-public interface LibraryDAO {
+public interface LibraryDao {
+
+    List<Book> findAll() throws DAOException;
 
     List<Book> addBook(Book book) throws DAOException;
 
@@ -30,4 +32,6 @@ public interface LibraryDAO {
     List<Book> sortBooksByNumberOfPages();
 
     List<Book> sortBooksByYearOfPublishing();
+
+
 }

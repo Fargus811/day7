@@ -1,6 +1,6 @@
 package com.sergeev.day6.service.impl;
 
-import com.sergeev.day6.model.dao.impl.LibraryDAOImpl;
+import com.sergeev.day6.model.dao.impl.LibraryDaoImpl;
 import com.sergeev.day6.model.entity.Book;
 import com.sergeev.day6.model.exception.DAOException;
 import com.sergeev.day6.model.exception.ServiceException;
@@ -18,7 +18,7 @@ public class LibraryServiceImpl implements LibraryService {
         List<Book> result = new ArrayList<>();
         BookValidator bookValidator = new BookValidator();
         if (book != null && bookValidator.validateBook(book)) {
-            LibraryDAOImpl bookListDAO = new LibraryDAOImpl();
+            LibraryDaoImpl bookListDAO = new LibraryDaoImpl();
             try {
                 result = bookListDAO.addBook(book);
             } catch (DAOException e) {
@@ -33,7 +33,7 @@ public class LibraryServiceImpl implements LibraryService {
         List<Book> result = new ArrayList<>();
         BookValidator bookValidator = new BookValidator();
         if (book != null && bookValidator.validateBook(book)) {
-            LibraryDAOImpl bookListDAO = new LibraryDAOImpl();
+            LibraryDaoImpl bookListDAO = new LibraryDaoImpl();
             try {
                 result = bookListDAO.removeBook(book);
             } catch (DAOException e) {
@@ -48,7 +48,7 @@ public class LibraryServiceImpl implements LibraryService {
         List<Book> books = new ArrayList<>();
         BookValidator bookValidator = new BookValidator();
         if (bookValidator.validateTitleOfBook(title)) {
-            LibraryDAOImpl bookListDAO = new LibraryDAOImpl();
+            LibraryDaoImpl bookListDAO = new LibraryDaoImpl();
             books = bookListDAO.findByTitle(title);
         }
         return books;
@@ -59,7 +59,7 @@ public class LibraryServiceImpl implements LibraryService {
         List<Book> books = new ArrayList<>();
         BookValidator bookValidator = new BookValidator();
         if (bookValidator.validateAuthorOfBook(author)) {
-            LibraryDAOImpl bookListDAO = new LibraryDAOImpl();
+            LibraryDaoImpl bookListDAO = new LibraryDaoImpl();
             books = bookListDAO.findByAuthor(author);
         }
         return books;
@@ -73,7 +73,7 @@ public class LibraryServiceImpl implements LibraryService {
         double maxCost = numberParser.parseToDouble(maxCostLine);
         BookValidator bookValidator = new BookValidator();
         if (bookValidator.validateCostOfBook(minCost) && bookValidator.validateCostOfBook(maxCost)) {
-            LibraryDAOImpl bookListDAO = new LibraryDAOImpl();
+            LibraryDaoImpl bookListDAO = new LibraryDaoImpl();
             books = bookListDAO.findByCost(minCost, maxCost);
         }
         return books;
@@ -89,7 +89,7 @@ public class LibraryServiceImpl implements LibraryService {
         BookValidator bookValidator = new BookValidator();
         if (bookValidator.validateNumberOfPagesInBook(minNumberOfPages) &&
                 bookValidator.validateNumberOfPagesInBook(maxNumberOfPages)) {
-            LibraryDAOImpl bookListDAO = new LibraryDAOImpl();
+            LibraryDaoImpl bookListDAO = new LibraryDaoImpl();
             books = bookListDAO.findByNumberOfPages(minNumberOfPages, maxNumberOfPages);
         }
         return books;
@@ -105,7 +105,7 @@ public class LibraryServiceImpl implements LibraryService {
         BookValidator bookValidator = new BookValidator();
         if (bookValidator.validateYearOfPublishing(minYearOfPublishing) &&
                 bookValidator.validateYearOfPublishing(maxYearOfPublishing)) {
-            LibraryDAOImpl bookListDAO = new LibraryDAOImpl();
+            LibraryDaoImpl bookListDAO = new LibraryDaoImpl();
             books = bookListDAO.findByYearOfPublishing(minYearOfPublishing, maxYearOfPublishing);
         }
         return books;
@@ -113,31 +113,31 @@ public class LibraryServiceImpl implements LibraryService {
 
     @Override
     public List<Book> sortBooksByTitle() {
-        LibraryDAOImpl bookListDAO = new LibraryDAOImpl();
+        LibraryDaoImpl bookListDAO = new LibraryDaoImpl();
         return bookListDAO.sortBooksByTitle();
     }
 
     @Override
     public List<Book> sortBooksByAuthors() {
-        LibraryDAOImpl bookListDAO = new LibraryDAOImpl();
+        LibraryDaoImpl bookListDAO = new LibraryDaoImpl();
         return bookListDAO.sortBooksByAuthors();
     }
 
     @Override
     public List<Book> sortBooksByCost() {
-        LibraryDAOImpl bookListDAO = new LibraryDAOImpl();
+        LibraryDaoImpl bookListDAO = new LibraryDaoImpl();
         return bookListDAO.sortBooksByCost();
     }
 
     @Override
     public List<Book> sortBooksByNumberOfPages() {
-        LibraryDAOImpl bookListDAO = new LibraryDAOImpl();
+        LibraryDaoImpl bookListDAO = new LibraryDaoImpl();
         return bookListDAO.sortBooksByNumberOfPages();
     }
 
     @Override
     public List<Book> sortBooksByYearOfPublishing() {
-        LibraryDAOImpl bookListDAO = new LibraryDAOImpl();
+        LibraryDaoImpl bookListDAO = new LibraryDaoImpl();
         return bookListDAO.sortBooksByYearOfPublishing();
     }
 
