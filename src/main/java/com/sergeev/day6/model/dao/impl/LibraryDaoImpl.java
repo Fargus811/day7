@@ -16,18 +16,14 @@ import java.util.List;
 
 public class LibraryDaoImpl implements LibraryDao {
 
-    private static final String FIND_ALL_SQL = "SELECT id, title, authors, cost, year, numberOfPages FROM book";
+    private static final String FIND_ALL_BOOKS_SQL = "SELECT id, title, authors, cost, year, numberOfPages FROM book";
     private static final String REGEX_FOR_SPLIT_AUTHORS = ":";
 
-    public static void main(String[] args) throws DAOException {
-        LibraryDao libraryDao = new LibraryDaoImpl();
-        System.out.println(libraryDao.findAll());
-    }
 
     @Override
     public List<Book> findAll() throws DAOException {
         Connection connection = ConnectionPool.getInstance().takeConnection();
-        try (PreparedStatement ps = connection.prepareStatement(FIND_ALL_SQL);
+        try (PreparedStatement ps = connection.prepareStatement(FIND_ALL_BOOKS_SQL);
              ResultSet rs = ps.executeQuery()) {
             List<Book> books = new ArrayList<>();
             while (rs.next()) {
