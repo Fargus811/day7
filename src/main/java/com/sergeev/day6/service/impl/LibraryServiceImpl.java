@@ -17,6 +17,7 @@ public class LibraryServiceImpl implements LibraryService {
     public List<Book> addBook(Book book) throws ServiceException {
         List<Book> result = new ArrayList<>();
         BookValidator bookValidator = new BookValidator();
+
         if (book != null && bookValidator.validateBook(book)) {
             LibraryDaoImpl bookListDAO = new LibraryDaoImpl();
             try {
@@ -33,14 +34,35 @@ public class LibraryServiceImpl implements LibraryService {
         List<Book> result = new ArrayList<>();
         BookValidator bookValidator = new BookValidator();
         if (book != null && bookValidator.validateBook(book)) {
-            LibraryDaoImpl bookListDAO = new LibraryDaoImpl();
+            LibraryDaoImpl libraryDao = new LibraryDaoImpl();
+            List<Book> books = getBooks(libraryDao);
+            result = deleteBookFromLibrary(book, libraryDao, books);
+        }
+        return result;
+    }
+
+    private List<Book> deleteBookFromLibrary(Book book, LibraryDaoImpl libraryDao, List<Book> books) throws ServiceException {
+        List<Book> result;
+        if (books.contains(book)) {
             try {
-                result = bookListDAO.removeBook(book);
+                result = libraryDao.removeBook(book);
             } catch (DAOException e) {
                 throw new ServiceException(e);
             }
+        }else {
+            throw new ServiceException("This book not found");
         }
         return result;
+    }
+
+    private List<Book> getBooks(LibraryDaoImpl libraryDao) throws ServiceException {
+        List<Book> books;
+        try {
+            books = libraryDao.findAll();
+        } catch (DAOException e) {
+            throw new ServiceException(e);
+        }
+        return books;
     }
 
     @Override

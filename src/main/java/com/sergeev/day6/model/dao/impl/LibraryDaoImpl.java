@@ -3,7 +3,9 @@ package com.sergeev.day6.model.dao.impl;
 import com.sergeev.day6.model.dao.LibraryDao;
 import com.sergeev.day6.model.entity.Book;
 import com.sergeev.day6.model.exception.DAOException;
+import com.sergeev.day6.model.exception.ServiceException;
 import com.sergeev.day6.pool.ConnectionPool;
+import com.sergeev.day6.service.impl.LibraryServiceImpl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,8 +19,30 @@ import java.util.List;
 public class LibraryDaoImpl implements LibraryDao {
 
     private static final String FIND_ALL_BOOKS_SQL = "SELECT id, title, authors, cost, year, numberOfPages FROM book";
+    private static final String INSERT_BOOK_SQL = "INSERT INTO book (title, authors, cost, year, numberOfPages)" +
+            "VALUES (?, ?, ?, ?, ?)";
+    private static final String REMOVE_BOOK_SQL = "DELETE FROM book WHERE id = ?";
     private static final String REGEX_FOR_SPLIT_AUTHORS = ":";
 
+
+    public static void main(String[] args) throws DAOException {
+        LibraryServiceImpl libraryService = new LibraryServiceImpl();
+        Book book = new Book();
+        book.setTitle("Testbook3");
+        List<String> authors = new ArrayList<>();
+        authors.add("Vlad");
+        authors.add("Flad");
+        book.setId(3);
+        book.setAuthors(authors);
+        book.setCost(80.0);
+        book.setNumberOfPages(400);
+        book.setYearOfPublishing(2009);
+        try {
+            libraryService.removeBook(book);
+        } catch (ServiceException e) {
+            System.out.println(e);
+        }
+    }
 
     @Override
     public List<Book> findAll() throws DAOException {
@@ -32,38 +56,48 @@ public class LibraryDaoImpl implements LibraryDao {
             return books;
         } catch (SQLException e) {
             throw new DAOException(e);
-        }finally {
+        } finally {
             ConnectionPool.getInstance().close(connection);
         }
     }
 
     @Override
     public List<Book> addBook(Book book) throws DAOException {
-
-//        List<Book> books = Library.getInstance().findAll();
-//        if (books.size() + 1 < Library.MAX_CAPACITY && !books.contains(book)) {
-//            Library.getInstance().addBook(book);
-//        } else {
-//            throw new DAOException("Library is full or contains this book");
-//        }
-//        return Library.getInstance().findAll();
-        return null;
+        Connection connection = ConnectionPool.getInstance().takeConnection();
+        try (PreparedStatement statement = connection.prepareStatement(INSERT_BOOK_SQL)) {
+            statement.setString(1, book.getTitle());
+            statement.setString(2, book.getAuthors().toString());
+            statement.setDouble(3, book.getCost());
+            statement.setInt(4, book.getYearOfPublishing());
+            statement.setInt(5, book.getNumberOfPages());
+            statement.executeUpdate();
+            List<Book> books = findAll();
+            return books;
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            ConnectionPool.getInstance().close(connection);
+        }
     }
 
     @Override
     public List<Book> removeBook(Book book) throws DAOException {
-//        List<Book> books = Library.getInstance().findAll();
-//        if (books.contains(book)) {
-//            Library.getInstance().removeBook(book);
-//        } else {
-//            throw new DAOException("Book not found");
-//        }
-//        return Library.getInstance().findAll();
-        return null;
+        Connection connection = ConnectionPool.getInstance().takeConnection();
+        try (PreparedStatement statement = connection.prepareStatement(REMOVE_BOOK_SQL)) {
+            statement.setInt(1, book.getId());
+            statement.execute();
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            ConnectionPool.getInstance().close(connection);
+        }
+        List<Book> books = findAll();
+        return books;
     }
 
     @Override
     public List<Book> findByTitle(String nameOfBook) {
+
 //        List<Book> bookList = new ArrayList<>();
 //        for (Book book : Library.getInstance().findAll()) {
 //            if (nameOfBook.equals(book.getTitle())) {
