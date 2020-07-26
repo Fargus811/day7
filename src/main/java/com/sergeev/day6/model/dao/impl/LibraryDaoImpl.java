@@ -2,10 +2,8 @@ package com.sergeev.day6.model.dao.impl;
 
 import com.sergeev.day6.model.dao.LibraryDao;
 import com.sergeev.day6.model.entity.Book;
-import com.sergeev.day6.model.exception.DAOException;
-import com.sergeev.day6.model.exception.ServiceException;
+import com.sergeev.day6.model.exception.DaoException;
 import com.sergeev.day6.pool.ConnectionPool;
-import com.sergeev.day6.service.impl.LibraryServiceImpl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,29 +21,15 @@ public class LibraryDaoImpl implements LibraryDao {
             "VALUES (?, ?, ?, ?, ?)";
     private static final String REMOVE_BOOK_SQL = "DELETE FROM book WHERE id = ?";
     private static final String REGEX_FOR_SPLIT_AUTHORS = ":";
-
-
-    public static void main(String[] args) throws DAOException {
-        LibraryServiceImpl libraryService = new LibraryServiceImpl();
-        Book book = new Book();
-        book.setTitle("Testbook3");
-        List<String> authors = new ArrayList<>();
-        authors.add("Vlad");
-        authors.add("Flad");
-        book.setId(3);
-        book.setAuthors(authors);
-        book.setCost(80.0);
-        book.setNumberOfPages(400);
-        book.setYearOfPublishing(2009);
-        try {
-            libraryService.removeBook(book);
-        } catch (ServiceException e) {
-            System.out.println(e);
-        }
-    }
+    private static final String FIND_BOOK_BY_TITLE_SQL = "SELECT id, title, authors, cost, year, numberOfPages " +
+            "FROM book WHERE title = ?";
+    private static final String FIND_BOOK_BY_COST_SQL = "SELECT id, title, authors, cost, year, numberOfPages " +
+            "FROM book WHERE cost > ? AND cost < ?";
+    private static final String FIND_BOOK_BY_NUMBER_OF_PAGES_SQL = "SELECT id, title, authors, cost, year, numberOfPages " +
+            "FROM book WHERE numberOfPages > ? AND numberOfPages < ?";
 
     @Override
-    public List<Book> findAll() throws DAOException {
+    public List<Book> findAll() throws DaoException {
         Connection connection = ConnectionPool.getInstance().takeConnection();
         try (PreparedStatement ps = connection.prepareStatement(FIND_ALL_BOOKS_SQL);
              ResultSet rs = ps.executeQuery()) {
@@ -55,14 +39,14 @@ public class LibraryDaoImpl implements LibraryDao {
             }
             return books;
         } catch (SQLException e) {
-            throw new DAOException(e);
+            throw new DaoException(e);
         } finally {
             ConnectionPool.getInstance().close(connection);
         }
     }
 
     @Override
-    public List<Book> addBook(Book book) throws DAOException {
+    public List<Book> addBook(Book book) throws DaoException {
         Connection connection = ConnectionPool.getInstance().takeConnection();
         try (PreparedStatement statement = connection.prepareStatement(INSERT_BOOK_SQL)) {
             statement.setString(1, book.getTitle());
@@ -74,20 +58,20 @@ public class LibraryDaoImpl implements LibraryDao {
             List<Book> books = findAll();
             return books;
         } catch (SQLException e) {
-            throw new DAOException(e);
+            throw new DaoException(e);
         } finally {
             ConnectionPool.getInstance().close(connection);
         }
     }
 
     @Override
-    public List<Book> removeBook(Book book) throws DAOException {
+    public List<Book> removeBook(Book book) throws DaoException {
         Connection connection = ConnectionPool.getInstance().takeConnection();
         try (PreparedStatement statement = connection.prepareStatement(REMOVE_BOOK_SQL)) {
             statement.setInt(1, book.getId());
             statement.execute();
         } catch (SQLException e) {
-            throw new DAOException(e);
+            throw new DaoException(e);
         } finally {
             ConnectionPool.getInstance().close(connection);
         }
@@ -96,60 +80,59 @@ public class LibraryDaoImpl implements LibraryDao {
     }
 
     @Override
-    public List<Book> findByTitle(String nameOfBook) {
-
-//        List<Book> bookList = new ArrayList<>();
-//        for (Book book : Library.getInstance().findAll()) {
-//            if (nameOfBook.equals(book.getTitle())) {
-//                bookList.add(book);
-//            }
-//        }
-//        return bookList;
-        return null;
-    }
-
-    @Override
-    public List<Book> findByAuthor(String authorName) {
-//        List<Book> bookList = new ArrayList<>();
-//        for (Book book : Library.getInstance().findAll()) {
-//            checkBookByAuthorName(authorName, bookList, book);
-//        }
-//        return bookList;
-        return null;
-    }
-
-    private void checkBookByAuthorName(String authorName, List<Book> bookList, Book book) {
-        for (String author : book.getAuthors()) {
-            if (authorName.equals(author)) {
-                bookList.add(book);
-                break;
+    public List<Book> findByTitle(String nameOfBook) throws DaoException {
+        List<Book> result = new ArrayList<>();
+        Connection connection = ConnectionPool.getInstance().takeConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_BOOK_BY_TITLE_SQL)) {
+            preparedStatement.setString(1, nameOfBook);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                resultSet.next();
+                result.add(makeEntity(resultSet));
+                return result;
             }
-        }
+        } catch (SQLException e) {
+            throw new DaoException("Problem when trying to find book by title", e);
+        } finally {
+        ConnectionPool.getInstance().close(connection);
+    }
     }
 
     @Override
-    public List<Book> findByCost(double minCost, double maxCost) {
-//        List<Book> bookList = new ArrayList<>();
-//        for (Book book : Library.getInstance().findAll()) {
-//            double currentCost = book.getCost();
-//            if (currentCost >= minCost && currentCost <= maxCost) {
-//                bookList.add(book);
-//            }
-//        }
-        return null;
+    public List<Book> findByCost(double minCost, double maxCost) throws DaoException{
+        List<Book> result = new ArrayList<>();
+        Connection connection = ConnectionPool.getInstance().takeConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_BOOK_BY_COST_SQL)) {
+            preparedStatement.setDouble(1, minCost);
+            preparedStatement.setDouble(2, maxCost);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                resultSet.next();
+                result.add(makeEntity(resultSet));
+                return result;
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Problem when trying to find book by cost", e);
+        } finally {
+        ConnectionPool.getInstance().close(connection);
+    }
     }
 
     @Override
-    public List<Book> findByNumberOfPages(int minNumberOfPages, int maxNumberOfPages) {
-//        List<Book> bookList = new ArrayList<>();
-//        for (Book book : Library.getInstance().findAll()) {
-//            int currentNumberOfPages = book.getNumberOfPages();
-//            if (currentNumberOfPages >= minNumberOfPages && currentNumberOfPages <= maxNumberOfPages) {
-//                bookList.add(book);
-//            }
-//        }
-//        return bookList;
-        return null;
+    public List<Book> findByNumberOfPages(int minNumberOfPages, int maxNumberOfPages) throws DaoException {
+       List<Book> result = new ArrayList<>();
+        Connection connection = ConnectionPool.getInstance().takeConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_BOOK_BY_NUMBER_OF_PAGES_SQL)) {
+            preparedStatement.setInt(1, minNumberOfPages);
+            preparedStatement.setDouble(2, maxNumberOfPages);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                resultSet.next();
+                result.add(makeEntity(resultSet));
+                return result;
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Problem when trying to find book by cost", e);
+        } finally {
+        ConnectionPool.getInstance().close(connection);
+    }
     }
 
     @Override

@@ -2,7 +2,7 @@ package com.sergeev.day6.service.impl;
 
 import com.sergeev.day6.model.dao.impl.LibraryDaoImpl;
 import com.sergeev.day6.model.entity.Book;
-import com.sergeev.day6.model.exception.DAOException;
+import com.sergeev.day6.model.exception.DaoException;
 import com.sergeev.day6.model.exception.ServiceException;
 import com.sergeev.day6.service.LibraryService;
 import com.sergeev.day6.util.parser.NumberParser;
@@ -22,7 +22,7 @@ public class LibraryServiceImpl implements LibraryService {
             LibraryDaoImpl bookListDAO = new LibraryDaoImpl();
             try {
                 result = bookListDAO.addBook(book);
-            } catch (DAOException e) {
+            } catch (DaoException e) {
                 throw new ServiceException(e);
             }
         }
@@ -46,7 +46,7 @@ public class LibraryServiceImpl implements LibraryService {
         if (books.contains(book)) {
             try {
                 result = libraryDao.removeBook(book);
-            } catch (DAOException e) {
+            } catch (DaoException e) {
                 throw new ServiceException(e);
             }
         }else {
@@ -59,7 +59,7 @@ public class LibraryServiceImpl implements LibraryService {
         List<Book> books;
         try {
             books = libraryDao.findAll();
-        } catch (DAOException e) {
+        } catch (DaoException e) {
             throw new ServiceException(e);
         }
         return books;

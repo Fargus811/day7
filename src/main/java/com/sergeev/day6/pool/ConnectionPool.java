@@ -1,7 +1,7 @@
 package com.sergeev.day6.pool;
 
 
-import com.sergeev.day6.model.exception.DAOException;
+import com.sergeev.day6.model.exception.DaoException;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -16,7 +16,7 @@ public class ConnectionPool {
     private Queue<Connection> givenAwayConQueue;
     private final int DEFAULT_POOL_SIZE = 10;
 
-    private ConnectionPool() throws DAOException {
+    private ConnectionPool() throws DaoException {
         try {
             givenAwayConQueue = new ArrayDeque<Connection>(DEFAULT_POOL_SIZE);
             connectionQueue = new ArrayDeque<Connection>(DEFAULT_POOL_SIZE);
@@ -25,13 +25,13 @@ public class ConnectionPool {
                 Connection connection = connectionProducer.produce();
                 connectionQueue.add(connection);
             }
-        } catch (SQLException | DAOException e) {
+        } catch (SQLException | DaoException e) {
             //todo customException
-            throw new DAOException("SQLException in ConnectionPool", e);
+            throw new DaoException("SQLException in ConnectionPool", e);
         }
     }
 
-    public static ConnectionPool getInstance() throws DAOException {
+    public static ConnectionPool getInstance() throws DaoException {
         if (instance == null) {
             instance = new ConnectionPool();
         }

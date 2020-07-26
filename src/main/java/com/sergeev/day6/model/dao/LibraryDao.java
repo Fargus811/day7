@@ -1,25 +1,23 @@
 package com.sergeev.day6.model.dao;
 
 import com.sergeev.day6.model.entity.Book;
-import com.sergeev.day6.model.exception.DAOException;
+import com.sergeev.day6.model.exception.DaoException;
 
 import java.util.List;
 
 public interface LibraryDao {
 
-    List<Book> findAll() throws DAOException;
+    List<Book> findAll() throws DaoException;
 
-    List<Book> addBook(Book book) throws DAOException;
+    List<Book> addBook(Book book) throws DaoException;
 
-    List<Book> removeBook(Book book) throws DAOException;
+    List<Book> removeBook(Book book) throws DaoException;
 
-    List<Book> findByTitle(String name);
+    List<Book> findByTitle(String name) throws DaoException;
 
-    List<Book> findByAuthor(String author);
+    List<Book> findByCost(double minCost, double maxCost) throws DaoException;
 
-    List<Book> findByCost(double minCost, double maxCost);
-
-    List<Book> findByNumberOfPages(int minNumberOfPages, int maxNumberOfPages);
+    List<Book> findByNumberOfPages(int minNumberOfPages, int maxNumberOfPages) throws DaoException;
 
     List<Book> findByYearOfPublishing(int minYearOfPublishing, int maxYearOfPublishing);
 

@@ -1,6 +1,6 @@
 package com.sergeev.day6.pool;
 
-import com.sergeev.day6.model.exception.DAOException;
+import com.sergeev.day6.model.exception.DaoException;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -26,7 +26,7 @@ public class ConnectionProducer {
     private static final String CHARACTER_ENCODING_KEY_PROPERTY = "encoding";
     private static final String USE_UNICODE_KEY_PROPERTY = "useUnicode";
 
-    ConnectionProducer() throws DAOException {
+    ConnectionProducer() throws DaoException {
         ResourceBundle resourceBundle = ResourceBundle.getBundle(DATABASE_KEY_PROPERTY);
         configProp = new Properties();
         url = resourceBundle.getString(URL);
@@ -39,7 +39,7 @@ public class ConnectionProducer {
             DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
         } catch (SQLException e) {
             //todo make custom exception
-            throw new DAOException(e);
+            throw new DaoException(e);
         }
     }
 
