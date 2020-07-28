@@ -1,12 +1,10 @@
 package com.sergeev.day7.model.entity;
 
-import java.util.List;
-
 public class Book {
 
     private int id;
     private String title;
-    private List<String> authors;
+    private String authors;
     private double cost;
     private int numberOfPages;
     private int yearOfPublishing;
@@ -27,11 +25,11 @@ public class Book {
         this.title = title;
     }
 
-    public List<String> getAuthors() {
+    public String getAuthors() {
         return authors;
     }
 
-    public void setAuthors(List<String> authors) {
+    public void setAuthors(String authors) {
         this.authors = authors;
     }
 
@@ -58,7 +56,6 @@ public class Book {
     public void setYearOfPublishing(int yearOfPublishing) {
         this.yearOfPublishing = yearOfPublishing;
     }
-
 
     @Override
     public boolean equals(Object o) {
@@ -94,7 +91,7 @@ public class Book {
         final StringBuilder sb = new StringBuilder("Book{");
         sb.append("id=").append(id);
         sb.append(", title='").append(title).append('\'');
-        sb.append(", authors=").append(authors);
+        sb.append(", authors='").append(authors).append('\'');
         sb.append(", cost=").append(cost);
         sb.append(", numberOfPages=").append(numberOfPages);
         sb.append(", yearOfPublishing=").append(yearOfPublishing);
@@ -102,3 +99,4 @@ public class Book {
         return sb.toString();
     }
 }
+

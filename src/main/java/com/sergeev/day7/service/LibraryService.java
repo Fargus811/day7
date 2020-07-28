@@ -9,7 +9,7 @@ public interface LibraryService {
 
     List<Book> addBook(Book book) throws ServiceException;
 
-    List<Book> removeBook(Book book) throws ServiceException;
+    List<Book> removeBookByTitle(Book book) throws ServiceException;
 
     List<Book> findByTitle(String name) throws ServiceException;
 
@@ -19,11 +19,6 @@ public interface LibraryService {
 
     List<Book> findByYearOfPublishing(String minYearOfPublishing, String maxYearOfPublishing) throws ServiceException;
 
-    List<Book> sortBooksByTitle() ;
+    List<Book> sortBooksBy(String parameter) throws ServiceException ;
 
-    List<Book> sortBooksByCost();
-
-    List<Book> sortBooksByNumberOfPages();
-
-    List<Book> sortBooksByYearOfPublishing();
 }

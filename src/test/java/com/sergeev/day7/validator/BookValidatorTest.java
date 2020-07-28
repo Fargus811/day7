@@ -4,9 +4,6 @@ import com.sergeev.day7.model.entity.Book;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
@@ -82,9 +79,7 @@ public class BookValidatorTest {
     @Test
     public void testValidateBookPositive() {
         Book book = new Book();
-        List<String> authors = new ArrayList<>();
-        authors.add("Sergeev D.");
-        authors.add("Hemster W.");
+        String authors = "Sergeev D.,Hemster W.";
         book.setTitle("TestBook1");
         book.setYearOfPublishing(2010);
         book.setNumberOfPages(300);
@@ -97,9 +92,7 @@ public class BookValidatorTest {
     @Test
     public void testValidateBookNegative() {
         Book book = new Book();
-        List<String> authors = new ArrayList<>();
-        authors.add("Sergeev D.");
-        authors.add("Hemster W.");
+        String authors = "Sergeev D.,Hemster W.";
         book.setTitle("TestBook1");
         book.setYearOfPublishing(201000);
         book.setNumberOfPages(300000);

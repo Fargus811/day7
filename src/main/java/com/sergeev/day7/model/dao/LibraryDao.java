@@ -11,7 +11,7 @@ public interface LibraryDao {
 
     List<Book> addBook(Book book) throws DaoException;
 
-    List<Book> removeBook(Book book) throws DaoException;
+    List<Book> removeBookByTitle(Book book) throws DaoException;
 
     List<Book> findByTitle(String name) throws DaoException;
 
@@ -21,13 +21,5 @@ public interface LibraryDao {
 
     List<Book> findByYearOfPublishing(int minYearOfPublishing, int maxYearOfPublishing) throws DaoException;
 
-    List<Book> sortBooksByTitle();
-
-    List<Book> sortBooksByCost();
-
-    List<Book> sortBooksByNumberOfPages();
-
-    List<Book> sortBooksByYearOfPublishing();
-
-
+    List<Book> sortBooksBy(String parameter) throws DaoException;
 }

@@ -10,7 +10,7 @@ import com.sergeev.day7.util.creator.BookCreator;
 import java.util.List;
 import java.util.Map;
 
-public class RemoveBookCommand implements Command {
+public class RemoveBookByTitleCommand implements Command {
 
     @Override
     public List<Book> execute(Map<String, String> params) throws CommandException {
@@ -19,7 +19,7 @@ public class RemoveBookCommand implements Command {
         List<Book> result;
         Book bookToDelete = bookCreator.createBookFromMap(params).orElse(null);
         try {
-            result = libraryServiceImpl.removeBook(bookToDelete);
+            result = libraryServiceImpl.removeBookByTitle(bookToDelete);
         } catch (ServiceException e) {
             throw new CommandException(e);
         }

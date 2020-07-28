@@ -1,6 +1,7 @@
-package com.sergeev.day7.model.dao.impl;
+package com.sergeev.day7.controller.command.sort;
 
 import com.sergeev.day7.model.entity.Book;
+import com.sergeev.day7.model.exception.CommandException;
 import com.sergeev.day7.model.exception.DaoException;
 import com.sergeev.day7.pool.ConnectionPool;
 import org.testng.annotations.AfterMethod;
@@ -11,13 +12,15 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.testng.Assert.assertEquals;
 
-public class LibraryDaoImplTest {
+public class SortByParamCommandTest {
 
-    private LibraryDaoImpl libraryDao;
+    private SortByParamCommand sortByParamCommand;
     private Connection connection;
     private Statement statement;
     private Book bookFirst;
@@ -26,7 +29,7 @@ public class LibraryDaoImplTest {
 
     @BeforeMethod
     public void setup() throws DaoException, SQLException {
-        libraryDao = new LibraryDaoImpl();
+        sortByParamCommand = new SortByParamCommand();
         bookFirst = new Book();
         bookSecond = new Book();
         bookThird = new Book();
@@ -63,75 +66,16 @@ public class LibraryDaoImplTest {
         connection.close();
     }
 
-
     @Test
-    public void testFindAll() throws DaoException {
-        List<Book> expected = new ArrayList<>();
-        expected.add(bookFirst);
-        expected.add(bookSecond);
-        List<Book> actual = libraryDao.findAll();
-        assertEquals(actual, expected);
-    }
-
-    @Test
-    public void testAddBook() throws DaoException {
-        List<Book> expected = new ArrayList<>();
-        expected.add(bookFirst);
-        expected.add(bookSecond);
-        expected.add(bookThird);
-        List<Book> actual = libraryDao.addBook(bookThird);
-        assertEquals(actual, expected);
-    }
-
-    @Test
-    public void testRemoveBookById() throws DaoException {
-        List<Book> expected = new ArrayList<>();
-        expected.add(bookFirst);
-        List<Book> actual = libraryDao.removeBookByTitle(bookSecond);
-        assertEquals(actual, expected);
-    }
-
-    @Test
-    public void testFindByTitle() throws DaoException {
-        List<Book> expected = new ArrayList<>();
-        expected.add(bookFirst);
-        List<Book> actual = libraryDao.findByTitle("AestBook1");
-        assertEquals(actual, expected);
-    }
-
-    @Test
-    public void testFindByCost() throws DaoException {
-        List<Book> expected = new ArrayList<>();
-        expected.add(bookFirst);
-        List<Book> actual = libraryDao.findByCost(10.0, 30.0);
-        assertEquals(actual, expected);
-    }
-
-    @Test
-    public void testFindByNumberOfPages() throws DaoException {
-        List<Book> expected = new ArrayList<>();
-        expected.add(bookFirst);
-        List<Book> actual = libraryDao.findByNumberOfPages(100, 350);
-        assertEquals(actual, expected);
-    }
-
-    @Test
-    public void testFindByYearOfPublishing() throws DaoException {
-        List<Book> expected = new ArrayList<>();
-        expected.add(bookFirst);
-        List<Book> actual = libraryDao.findByYearOfPublishing(2009, 2011);
-        assertEquals(actual, expected);
-    }
-
-    @Test
-    public void testSortBooksByParameter() throws DaoException {
+    public void testExecute() throws CommandException {
+        Map<String, String> param = new HashMap<>();
+        param.put("parameter", "year");
         List<Book> expected = new ArrayList<>();
         expected.add(bookSecond);
         expected.add(bookFirst);
-        List<Book> actual = libraryDao.sortBooksBy("year");
+        List<Book> actual = sortByParamCommand.execute(param);
         assertEquals(actual, expected);
     }
-
 
     @AfterMethod
     public void after() throws SQLException, DaoException {

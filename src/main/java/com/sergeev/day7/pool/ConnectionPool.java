@@ -18,8 +18,8 @@ public class ConnectionPool {
 
     private ConnectionPool() throws DaoException {
         try {
-            givenAwayConQueue = new ArrayDeque<Connection>(DEFAULT_POOL_SIZE);
-            connectionQueue = new ArrayDeque<Connection>(DEFAULT_POOL_SIZE);
+            givenAwayConQueue = new ArrayDeque<>(DEFAULT_POOL_SIZE);
+            connectionQueue = new ArrayDeque<>(DEFAULT_POOL_SIZE);
             ConnectionProducer connectionProducer = new ConnectionProducer();
             for (int i = 0; i < DEFAULT_POOL_SIZE; i++) {
                 Connection connection = connectionProducer.produce();
@@ -45,7 +45,7 @@ public class ConnectionPool {
     }
 
 
-    public void close(Connection connection){
+    public void close(Connection connection) {
         givenAwayConQueue.remove(connection);
         connectionQueue.add(connection);
     }
